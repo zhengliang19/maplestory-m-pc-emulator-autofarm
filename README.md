@@ -1,4 +1,4 @@
-# Maplestory Mobile autofarm script for PC Emulators. 
+# Maplestory Mobile autofarm script on PC Emulators. 
 This is a simple python script based on keyboard bindings for auto farming on MapleStory M.
 
 # Note: Download and use it at your own risk. I will not take any responsibility if anything happens to your account. #
