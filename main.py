@@ -1,71 +1,44 @@
-#################     To Do List    #####################
-#                                                       #
-# 1. Auto Join PT                                       #
-# 2. Auto Change Channel                                #
-# 3. Auto Join Dungeon                                  #
-# 4. Properly define the list of keys                   #
-# 5. Solve key conflict issues when casting buff + skill#
-# 6. ???                                                #
-#                                                       #
-#########################################################
+from tkinter import *
+from farmer import skillCast, buffCast
 
-# For full list of keyboard commands, please refer to: #
-# https://pythonhosted.org/pynput/keyboard.html#pynput.keyboard.Key #
+running = True  # Global flag
+idx = 0  # loop index
 
-# All the keys are coded based on my own key bindings. 
-# Kindly change it accordingly based on your own preferences.
-# To view the full list of my key bindings, please refer to KeyBindings.png
+def start():
+    """Enable scanning by setting the global flag to True."""
+    global running
+    running = True
 
+def stop():
+    """Stop scanning by setting the global flag to False."""
+    global running
+    running = False
 
-from pyautogui import press
-import time
-import threading
-import random
+root = Tk()
+root.title("My Cute Maple Farmer")
+root.geometry("580x180")
 
-directions = 1
+app = Frame(root)
+app.grid()
 
-# The number of set of skills your character has. 
-noOfSkillsSet = 1 
+instruction1 = Label(app, text="Use this at your own risk.")
+instruction2 = Label(app, text="If the Emulator & the program is burning your PC, STOP it!")
+start = Button(app, text="Start Farming", command=start)
+stop = Button(app, text="Stop Farming", command=stop)
+instruction3 = Label(app, text="Memory might build up over time. Please spam click on Stop Farming continuously if the program freezed.")
+instruction4 = Label(app, text="If you realise your PC is slowing down abnormally after terminating the program, kindly reboot it.")
 
-def keyPress(keyValue):
-	press(keyValue)
-	print ("'" + keyValue + "'" + " key pressed!")
-	
-	# To prevent keyboard input delay:
-	time.sleep(0.5)
+instruction1.grid()
+instruction2.grid()
+start.grid()
+stop.grid()
+instruction3.grid()
+instruction4.grid()
 
-def skillCast():
-	global directions
-	rand = [1, 2, 3, 4, 5]	
-	# Cast your main skill for N times 
-	# This is to prevent consistent behaviours on your player which might trigger the BOT detectors.
-	for x in range(random.choice(rand)):
-		keyPress('q')
-		time.sleep(0.5)
-	# Press direction key twice to change direction
-	if directions:
-		keyPress('d') #keyPress('right')
-		keyPress('d') #keyPress('right')
-	else:
-		keyPress('a') #keyPress('left')
-		keyPress('a') #keyPress('left')
-	directions = not directions
-
-# Modify this accordingly based on your skill key bindings
-def buffCast():
-	# Cast buffs every 30 mins
-	global noOfSkillsSet
-	threading.Timer(10, buffCast).start()
-	buffKeys = ['1', '2', '3', '4']
-	switchKey = 'f1'
-	for x in range(noOfSkillsSet): # 3 Sets of skill key bindings
-		for keyValue in buffKeys:
-			keyPress(keyValue)
-		if (noOfSkillsSet != 1):
-			keyPress(switchKey)
-	
-print ("Program Started.")
-print ("Press Ctrl + C to exit.")
 buffCast()
 while True:
-	skillCast()
+    if idx % 500 == 0:
+        root.update()
+
+    if running:
+        skillCast()
